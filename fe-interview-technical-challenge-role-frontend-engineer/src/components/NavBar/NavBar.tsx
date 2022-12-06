@@ -13,7 +13,7 @@ type TNavBar = {
 
 function NavBar({ links }: TNavBar) {
   const { pathname } = useLocation();
-  console.log(pathname);
+
   return (
     <Box
       component="aside"
@@ -44,6 +44,7 @@ function NavBar({ links }: TNavBar) {
             to={href}
             color="#fff"
             underline="hover"
+            aria-current={isActive && 'page'}
             sx={{
               backgroundColor: isActive ? colors.white : colors.blue,
               width: '100%',
