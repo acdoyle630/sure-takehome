@@ -6,5 +6,3 @@ export const renderWithProviders = (
   ui: ReactElement,
   opts: Partial<Parameters<typeof render>[1]> = {}
 ) => render(<BrowserRouter>{ui}</BrowserRouter>, opts);
-
-export type GetByText = (str: string) => HTMLElement;

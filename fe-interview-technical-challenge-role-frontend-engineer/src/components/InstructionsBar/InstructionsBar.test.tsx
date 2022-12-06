@@ -1,32 +1,16 @@
 import InstructionsBar from './InstructionsBar';
-import { renderWithProviders, GetByText } from '../../utils/test';
-import { fireEvent } from '@testing-library/react';
+import { renderWithProviders } from '../../utils/test';
 
 describe('InstructionsBar', () => {
-  const mockOnClick = jest.fn();
   const defaultProps = {
-    onClick: mockOnClick,
+    onClick: jest.fn(),
   };
 
-  let getByText: GetByText;
-
-  beforeEach(() => {
-    ({ getByText } = renderWithProviders(
-      <InstructionsBar {...defaultProps} />
-    ));
-  });
-
   it('should render a "View challenges" button', () => {
+    const { getByText } = renderWithProviders(<InstructionsBar {...defaultProps} />);
     expect(getByText('View challenges')).toBeInTheDocument();
   });
 
-  describe('when the button is clicked', () => {
-    beforeEach(() => {
-      fireEvent.click(getByText('View challenges'));
-    });
-
-    it('should call the onClick prop', () => {
-      expect(mockOnClick).toBeCalled();
-    });
-  });
+  // TODO: Challenge 3
+  it('should call the onClick prop when the button is clicked', () => {});
 });

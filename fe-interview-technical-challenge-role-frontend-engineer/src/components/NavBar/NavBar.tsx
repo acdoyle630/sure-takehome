@@ -1,8 +1,5 @@
 import { Link, Box } from '@mui/material';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-
-import { colors } from '../../theme/colors';
-
+import { Link as RouterLink } from 'react-router-dom';
 type TNavBar = {
   links: {
     text: string;
@@ -12,8 +9,6 @@ type TNavBar = {
 };
 
 function NavBar({ links }: TNavBar) {
-  const { pathname } = useLocation();
-
   return (
     <Box
       component="aside"
@@ -34,32 +29,24 @@ function NavBar({ links }: TNavBar) {
         <img src="/surelogo.svg" alt="logo"></img>
       </Link>
 
-      {links.map(({ text, href, 'data-testid': dataTestId }) => {
-        const isActive = href === pathname;
-
-        return (
-          <Link
-            component={RouterLink}
-            key={href}
-            to={href}
-            color="#fff"
-            underline="hover"
-            aria-current={isActive && 'page'}
-            sx={{
-              backgroundColor: isActive ? colors.white : colors.blue,
-              width: '100%',
-              color: isActive ? colors.blue : colors.white,
-              cursor: 'pointer',
-              '&:not(:last-of-type)': {
-                marginBottom: '16px',
-              },
-            }}
-            data-testid={dataTestId}
-          >
-            {text}
-          </Link>
-        );
-      })}
+      {links.map(({ text, href, 'data-testid': dataTestId }) => (
+        <Link
+          component={RouterLink}
+          key={href}
+          to={href}
+          color="#fff"
+          underline="hover"
+          sx={{
+            cursor: 'pointer',
+            '&:not(:last-of-type)': {
+              marginBottom: '16px',
+            },
+          }}
+          data-testid={dataTestId}
+        >
+          {text}
+        </Link>
+      ))}
     </Box>
   );
 }
