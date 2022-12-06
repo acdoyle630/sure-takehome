@@ -3,6 +3,7 @@ import TableDemoView from './components/TableDemoView';
 import HomeView from './components/HomeView';
 import RedirectView from './components/RedirectView';
 import YouCanDoItView from './components/YouCanDoItView';
+import PolicyHoldersView from './components/PolicyHoldersView';
 import Layout from './components/Layout';
 import { useState } from 'react';
 import Modal from './components/Modal';
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<HomeView />} />
           <Route path="/table" element={<TableDemoView />} />
           <Route path="/you-can-do-it" element={<YouCanDoItView />} />
+          <Route path="/policyholders" element={<PolicyHoldersView />} />
           <Route path="*" element={<RedirectView />} />
         </Routes>
       </Layout>
