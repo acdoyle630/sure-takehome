@@ -43,6 +43,7 @@ function NavBar({ links }: TNavBar) {
             to={href}
             color="#fff"
             underline="hover"
+            aria-current={isActive && 'page'}
             sx={{
               backgroundColor: isActive ? colors.white : colors.blue,
               width: '100%',
