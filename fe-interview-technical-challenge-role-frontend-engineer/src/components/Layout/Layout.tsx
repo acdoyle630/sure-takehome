@@ -11,11 +11,19 @@ type TLayout = PropsWithChildren<{
 
 function Layout({ children, onFooterClick }: TLayout) {
   return (
-    <>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        minHeight: '100vh',
+      }}
+    >
       <Box
         component="main"
         sx={{
           display: 'flex',
+          flexGrow: 1,
         }}
       >
         <NavBar links={links} />
@@ -31,7 +39,7 @@ function Layout({ children, onFooterClick }: TLayout) {
         </Box>
       </Box>
       <Footer />
-    </>
+    </Box>
   );
 }
 
