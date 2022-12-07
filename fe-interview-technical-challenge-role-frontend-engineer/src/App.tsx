@@ -3,6 +3,8 @@ import TableDemoView from './components/TableDemoView';
 import HomeView from './components/HomeView';
 import RedirectView from './components/RedirectView';
 import YouCanDoItView from './components/YouCanDoItView';
+import PolicyHoldersProvider from './components/PolicyHolders/PolicyHoldersProvider';
+import PolicyHoldersView from './components/PolicyHolders';
 import Layout from './components/Layout';
 import { useState } from 'react';
 import Modal from './components/Modal';
@@ -18,6 +20,14 @@ function App() {
           <Route path="/" element={<HomeView />} />
           <Route path="/table" element={<TableDemoView />} />
           <Route path="/you-can-do-it" element={<YouCanDoItView />} />
+          <Route
+            path="/policyholders"
+            element={
+              <PolicyHoldersProvider>
+                <PolicyHoldersView />
+              </PolicyHoldersProvider>
+            }
+          />
           <Route path="*" element={<RedirectView />} />
         </Routes>
       </Layout>

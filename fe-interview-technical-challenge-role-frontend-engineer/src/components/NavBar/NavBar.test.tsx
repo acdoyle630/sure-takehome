@@ -1,5 +1,5 @@
 import NavBar from './NavBar';
-import { renderWithProviders } from '../../utils/test';
+import { renderWithProviders, GetByText } from '../../utils/test';
 
 describe('NavBar', () => {
   const defaultProps = {
@@ -10,14 +10,21 @@ describe('NavBar', () => {
     ],
   };
 
-  it('should render NavBar links', () => {
-    const { getByText } = renderWithProviders(<NavBar {...defaultProps} />);
+  let getByText: GetByText;
 
+  beforeEach(() => {
+    ({ getByText } = renderWithProviders(<NavBar {...defaultProps} />));
+  });
+
+  it('should render NavBar links', () => {
     expect(getByText('Link1')).toBeInTheDocument();
     expect(getByText('Link2')).toBeInTheDocument();
     expect(getByText('Link3')).toBeInTheDocument();
   });
 
-  // TODO: Challenge 2
-  it('should render an `href` attribute for each link', () => {});
+  it('should render an `href` attribute for each link', () => {
+    expect(getByText('Link1')).toHaveAttribute('href');
+    expect(getByText('Link2')).toHaveAttribute('href');
+    expect(getByText('Link3')).toHaveAttribute('href');
+  });
 });
