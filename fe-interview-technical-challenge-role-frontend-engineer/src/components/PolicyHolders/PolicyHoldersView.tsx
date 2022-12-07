@@ -1,9 +1,11 @@
 import PolicyHoldersTable from './PolicyHoldersTable';
+import AddPolicyHolderButton from './AddPolicyHolderButton';
 
 const PolicyHoldersView = () => {
   return (
     <>
       <PolicyHoldersTable />
+      <AddPolicyHolderButton />
     </>
   );
 };

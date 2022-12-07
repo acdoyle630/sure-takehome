@@ -1,21 +1,24 @@
 import { createContext, useContext, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 
-import { getPolicyHolders } from '../../services/policyHolderService';
+import {
+  getPolicyHolders,
+  createPolicyHolder,
+} from '../../services/policyHolderService';
 
-type PolicyHoldersContainerProps = {
+type PolicyHoldersProviderProps = {
   children: JSX.Element;
 };
 
 export type Address = {
   city: string;
   line1: string;
-  line2: string;
+  line2?: string;
   postalCode: string;
   state: string;
 };
 
-type PolicyHolders = {
+export type PolicyHolder = {
   age: number;
   isPrimary: boolean;
   name: string;
@@ -24,7 +27,7 @@ type PolicyHolders = {
 };
 
 type PolicyHolderState = {
-  policyHolders: PolicyHolders[];
+  policyHolders: PolicyHolder[];
 };
 
 const PolicyHolderProviderState = createContext<PolicyHolderState | undefined>(
@@ -32,13 +35,23 @@ const PolicyHolderProviderState = createContext<PolicyHolderState | undefined>(
 );
 const PolicyHolderProviderDispatch = createContext<any | undefined>(undefined);
 
-const PolicyHoldersContainer = ({ children }: PolicyHoldersContainerProps) => {
+const PolicyHoldersProvider = ({ children }: PolicyHoldersProviderProps) => {
   const { data: policyHoldersResponse } = useQuery(
     'get_all_policy_holders',
     async () => {
       return await getPolicyHolders();
     }
   );
+
+  const { mutate: createPolicyHolderMutation } = useMutation({
+    mutationFn: async (policyHolder: PolicyHolder) => {
+      const response = await createPolicyHolder(policyHolder);
+      return response;
+    },
+    onSuccess: (response) => {
+      console.log(response);
+    },
+  });
 
   const policyHolders = policyHoldersResponse?.data?.policyHolders ?? [];
 
@@ -49,22 +62,41 @@ const PolicyHoldersContainer = ({ children }: PolicyHoldersContainerProps) => {
     [policyHolders]
   );
 
+  const dispatch = useMemo(
+    () => ({ createPolicyHolderMutation }),
+    [createPolicyHolderMutation]
+  );
+
   return (
     <PolicyHolderProviderState.Provider value={state}>
-      <PolicyHolderProviderDispatch.Provider value={{}}>
+      <PolicyHolderProviderDispatch.Provider value={dispatch}>
         {children}
       </PolicyHolderProviderDispatch.Provider>
     </PolicyHolderProviderState.Provider>
   );
 };
 
-export default PolicyHoldersContainer;
+export default PolicyHoldersProvider;
 
 export const usePolicyHolderState = (): PolicyHolderState => {
   const context = useContext(PolicyHolderProviderState);
 
   if (context === undefined) {
-    throw new Error('usePolicyHolderState');
+    throw new Error(
+      'usePolicyHolderState must be used within a PolicyHoldersProvider'
+    );
+  }
+
+  return context;
+};
+
+export const usePolicyHolderDispatch = (): any => {
+  const context = useContext(PolicyHolderProviderDispatch);
+
+  if (context === undefined) {
+    throw new Error(
+      'usePolicyHolderDispatch must be used within a PolicyHoldersProvider'
+    );
   }
 
   return context;

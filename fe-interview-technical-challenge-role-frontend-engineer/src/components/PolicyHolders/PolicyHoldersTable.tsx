@@ -1,4 +1,3 @@
-import { PolylineOutlined } from '@mui/icons-material';
 import InfoTable from '../InfoTable';
 import { usePolicyHolderState, Address } from './PolicyHoldersProvider';
 
@@ -29,7 +28,7 @@ ${city}, ${state} ${postalCode}`;
     },
   ];
 
-  return <InfoTable header="Policy Holders" rows={rows} />;
+  return <InfoTable header="Primary Policy Holder" rows={rows} />;
 };
 
 export default PolicyHoldersTable;
