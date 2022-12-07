@@ -19,6 +19,7 @@ const AddPolicyHolderButton = () => {
             postalCode: '234234',
           },
           phoneNumber: '18005555555',
+          isPrimary: false,
         });
       }}
     >

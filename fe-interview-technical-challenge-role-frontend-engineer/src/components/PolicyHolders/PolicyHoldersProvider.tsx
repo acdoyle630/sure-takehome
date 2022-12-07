@@ -30,30 +30,40 @@ type PolicyHolderState = {
   policyHolders: PolicyHolder[];
 };
 
+type PolicyHolderDispatch = {
+  createPolicyHolderMutation: (policyHolder: PolicyHolder) => void;
+};
+
 const PolicyHolderProviderState = createContext<PolicyHolderState | undefined>(
   undefined
 );
-const PolicyHolderProviderDispatch = createContext<any | undefined>(undefined);
+const PolicyHolderProviderDispatch = createContext<
+  PolicyHolderDispatch | undefined
+>(undefined);
 
 const PolicyHoldersProvider = ({ children }: PolicyHoldersProviderProps) => {
-  const { data: policyHoldersResponse } = useQuery(
+  const [policyHolders, setPolicyHolders] = useState<PolicyHolder[]>([]);
+
+  useQuery(
     'get_all_policy_holders',
     async () => {
       return await getPolicyHolders();
+    },
+    {
+      onSuccess: (response) => {
+        setPolicyHolders(response?.data.policyHolders);
+      },
     }
   );
 
   const { mutate: createPolicyHolderMutation } = useMutation({
     mutationFn: async (policyHolder: PolicyHolder) => {
-      const response = await createPolicyHolder(policyHolder);
-      return response;
+      return await createPolicyHolder(policyHolder);
     },
     onSuccess: (response) => {
-      console.log(response);
+      setPolicyHolders(response?.data.policyHolders);
     },
   });
-
-  const policyHolders = policyHoldersResponse?.data?.policyHolders ?? [];
 
   const state = useMemo(
     () => ({
@@ -90,7 +100,7 @@ export const usePolicyHolderState = (): PolicyHolderState => {
   return context;
 };
 
-export const usePolicyHolderDispatch = (): any => {
+export const usePolicyHolderDispatch = (): PolicyHolderDispatch => {
   const context = useContext(PolicyHolderProviderDispatch);
 
   if (context === undefined) {
